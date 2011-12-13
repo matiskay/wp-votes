@@ -87,3 +87,10 @@ function wp_votes_post_init() {
   $query = $wpdb->prepare($sql, $post->ID, $vote_value);
   $wpdb->query($query);
 }
+
+function wp_votes_add_scripts() {
+   wp_register_script('wp_votes', plugins_url() . '/wp-votes/static/js/wp-votes.js');
+   // enqueue the script
+   wp_enqueue_script('wp_votes');
+}
+add_action('wp_enqueue_scripts', 'wp_votes_add_scripts');
