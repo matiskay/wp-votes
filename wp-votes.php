@@ -7,7 +7,7 @@ Version: 1.0
 */
 
 function wp_votes_widget() {
-  wp_vote_set_vote('up');
+  wp_votes_set_vote('up');
   include_once WP_PLUGIN_DIR . '/wp-votes/includes/utils.php';
 
   // RENDER VIEW
