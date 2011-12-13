@@ -10,6 +10,14 @@ Author URI: http://lucumalabs.com/
 */
 
 function wp_vote_widget() {
+  include_once WP_PLUGIN_DIR . '/wp-votes/includes/utils.php';
+
+  // RENDER VIEW
+  $context = array(
+  );
+
+  $content .= UTIL_Mustache::render('wp-vote-widget', $context);
+  return $content;
 
 }
 
