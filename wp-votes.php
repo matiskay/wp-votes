@@ -2,11 +2,8 @@
 
 /*
 Plugin Name: WP votes
-Plugin URI: http://lucumalabs.com/
 Description: Implements votes in wordpress
-Author: Lúcuma Labs
 Version: 1.0
-Author URI: http://lucumalabs.com/
 */
 
 function wp_vote_widget() {
@@ -41,4 +38,19 @@ function wp_vote_debug_info() {
   $ouput .= 'USER ID:   ' . $current_user->ID;
 
   return $output;
+}
+
+function wp_vote_set_vote() {
+  global $wpdb;
+  $sql = '';
+  $query = '';
+  $wpdb->query($query);
+}
+
+function wp_vote_get_votes() {
+  global $wpdb;
+  $sql = '';
+  $query = '';
+  $wpdb->query($query);
+  return $votes;
 }
