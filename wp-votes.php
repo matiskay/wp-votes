@@ -6,12 +6,19 @@ Description: Implements votes in wordpress
 Version: 1.0
 */
 
+define('WP_VOTES_INIT_VALUE', 0);
+
 function wp_votes_widget() {
+
+  global $post;
   wp_votes_set_vote('up');
   include_once WP_PLUGIN_DIR . '/wp-votes/includes/utils.php';
 
+  $votes = wp_votes_get_votes($post->ID);
+
   // RENDER VIEW
   $context = array(
+    'votes' => $votes,
   );
 
   $content .= UTIL_Mustache::render('wp-votes-widget', $context);
@@ -60,11 +67,11 @@ function wp_votes_set_vote($vote_tag) {
   return true;
 }
 
-function wp_votes_get_votes() {
+function wp_votes_get_votes($id) {
   global $wpdb;
-  $sql = '';
-  $query = '';
-  $wpdb->query($query);
+  $sql = 'SELECT SUM(vote) FROM wp_votes where post_id = %d';
+  $query = $wpdb->prepare($sql, $id);
+  $votes = $wpdb->get_var($query);
   return $votes;
 }
 
@@ -72,13 +79,11 @@ function wp_votes_get_votes() {
 add_action('publish_post', 'wp_votes_post_init');
 function wp_votes_post_init() {
   global $wpdb;
-
-  global $blog_id;
-  global $site_id;                                                                                                                                                        
   global $post;
 
+  $vote_value = WP_VOTES_INIT_VALUE;
 
-  $sql = 'INSERT INTO wp_hits (blog_id, site_id, post_id) VALUES (%d, %d, %d)' ;
-  $query = sprintf($sql, $blog_id, $site_id, $post->ID);
+  $sql = 'INSERT INTO wp_votes (post_id, vote) VALUES (%d, %d)';
+  $query = $wpdb->prepare($sql, $post->ID, $vote_value);
   $wpdb->query($query);
 }
