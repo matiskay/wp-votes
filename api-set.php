@@ -22,11 +22,20 @@ Status "ok" means that the vote can be performed.
   "message": "You can vote twice!"
 ]
 */
+
+// Load all the wp stack. Wp doesn't load automatically
+include_once dirname(__FILE__) . '/../../../wp-load.php';
+
+// Load all our custom functions
+include_once dirname(__FILE__) . '/wp-votes.php';
+
+// We love json
 header( 'Content-type: application/json' );
 
 $response = array('status' => 'error');
 
 if ( isset( $_POST['id'] ) && isset( $_POST['vote_tag'] ) ) {
+
 
   if ( wp_votes_set_vote( $_POST['id'], $_POST['vote_tag'] ) ) {
     $response['status'] = 'ok';
