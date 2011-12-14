@@ -11,14 +11,16 @@ $('.votes').on('click', 'a', function(e){
 
   var $this = $(this);
   var id = $this.parent().data('postid');
-  var vote_tag = $this.data('votetag');
+  var voteTag = $this.data('votetag');
+
+  var totalVotes = 0;
 
   console.log('id:   ' + id);
-  console.log('vote_tag:   ' + vote_tag);
+  console.log('vote_tag:   ' + voteTag);
 
   $.ajax({
     url : WP_VOTES_API_URL,
-    data : { 'id' : id, 'vote_tag' : vote_tag },
+    data : { 'id' : id, 'vote_tag' : voteTag },
     type : 'post',
     datatype : 'json',
     cache : false,
@@ -27,6 +29,12 @@ $('.votes').on('click', 'a', function(e){
       console.log('beforeSend');
     },
     success : function(json) {
+
+      if (voteTag === 'up') {
+        upVotes($this.parent().find('.total-points'));
+      } else if (voteTag === 'down') {
+        downVotes($this.parent().find('.total-points'));
+      }
       console.log(json);
     },
     error : function(result) {
@@ -39,6 +47,18 @@ $('.votes').on('click', 'a', function(e){
 });
 
 
+var upVotes = function($element) {
+  var totalVotes;
+  totalVotes = parseInt($element.text());
+  $element.text(totalVotes + 1);
+};
+
+
+var downVotes = function($element) {
+  var totalVotes;
+  totalVotes = parseInt($element.text());
+  $element.text(totalVotes - 1);
+};
 
 var updateVotes = function(json) {
   console.log('updateVotes');
