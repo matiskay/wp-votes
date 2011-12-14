@@ -50,6 +50,8 @@ function wp_votes_debug_info() {
 
 function wp_votes_set_vote($id, $vote_tag) {
   global $wpdb;
+
+  $id = (int) $id;
   
   if ($vote_tag == 'up') {
     $vote_value = 1;
