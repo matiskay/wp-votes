@@ -18,6 +18,7 @@ function wp_votes_widget() {
 
   // RENDER VIEW
   $context = array(
+    'id' => $post->ID,
     'votes' => $votes,
   );
 
@@ -77,7 +78,6 @@ function wp_votes_get_votes($id) {
 }
 
 // Init Post Hit
-add_action('publish_post', 'wp_votes_post_init');
 function wp_votes_post_init() {
   global $wpdb;
   global $post;
@@ -88,6 +88,7 @@ function wp_votes_post_init() {
   $query = $wpdb->prepare($sql, $post->ID, $vote_value);
   $wpdb->query($query);
 }
+add_action('publish_post', 'wp_votes_post_init');
 
 function wp_votes_add_scripts() {
    wp_register_script('wp_votes', plugins_url() . '/wp-votes/static/js/wp-votes.js', array('jquery'), '1.0', true);
