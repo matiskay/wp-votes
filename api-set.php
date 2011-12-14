@@ -22,14 +22,20 @@ Status "ok" means that the vote can be performed.
   "message": "You can vote twice!"
 ]
 */
-header('Content-type: application/json');
+header( 'Content-type: application/json' );
 
-$value = array('cool');
+$response = array('status' => 'error');
 
-if (isset($_POST['id']) && isset($_POST['vote_value']) ) {
+if ( isset( $_POST['id'] ) && isset( $_POST['vote_tag'] ) ) {
+
+  if ( wp_votes_set_vote( $_POST['id'], $_POST['vote_tag'] ) ) {
+    $response['status'] = 'ok';
+  }
+
+  $json = json_encode( $response );
 }
 
-$json = json_encode($value);
+$json = json_encode( $response );
 
 echo $json;
 
