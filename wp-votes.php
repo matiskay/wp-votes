@@ -11,7 +11,7 @@ define('WP_VOTES_INIT_VALUE', 0);
 function wp_votes_widget() {
 
   global $post;
-  wp_votes_set_vote('up');
+  wp_votes_set_vote($post->ID, 'up');
   include_once WP_PLUGIN_DIR . '/wp-votes/includes/utils.php';
 
   $votes = wp_votes_get_votes($post->ID);
@@ -48,9 +48,8 @@ function wp_votes_debug_info() {
   return $output;
 }
 
-function wp_votes_set_vote($vote_tag) {
+function wp_votes_set_vote($id, $vote_tag) {
   global $wpdb;
-  global $post;
   
   if ($vote_tag == 'up') {
     $vote_value = 1;
@@ -61,7 +60,7 @@ function wp_votes_set_vote($vote_tag) {
   }
 
   $sql = 'INSERT INTO wp_votes (post_id, vote) VALUES (%d, %d)';
-  $query = $wpdb->prepare($sql, $post->ID, $vote_value);
+  $query = $wpdb->prepare($sql, $id, $vote_value);
   $wpdb->query($query);
 
   return true;
@@ -89,7 +88,7 @@ function wp_votes_post_init() {
 }
 
 function wp_votes_add_scripts() {
-   wp_register_script('wp_votes', plugins_url() . '/wp-votes/static/js/wp-votes.js');
+   wp_register_script('wp_votes', plugins_url() . '/wp-votes/static/js/wp-votes.js', array('jquery'), '1.0', true);
    // enqueue the script
    wp_enqueue_script('wp_votes');
 }
