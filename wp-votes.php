@@ -8,6 +8,8 @@ Version: 1.0
 
 define('WP_VOTES_INIT_VALUE', 0);
 
+$BANNED_IPS = array();
+
 function wp_votes_widget() {
 
   global $post;
@@ -96,3 +98,20 @@ function wp_votes_add_scripts() {
    wp_enqueue_script('wp_votes');
 }
 add_action('wp_enqueue_scripts', 'wp_votes_add_scripts');
+
+/**
+ * Verify is the ip is banner or not.
+ *
+ * @param $ip
+ *   A string in the format 'a.b.c.d'
+ *
+ * @return
+ *   A boolean true is the ip is in the banned ips.
+ *   A boolena false is the ip is not in the banner ips.
+ */
+function wp_votes_is_in_banned_ips($ip, $banned_ips) {
+  if ( in_array($ip, $banned_ips) ) {
+    return true;
+  }
+  return false;
+}
