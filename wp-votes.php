@@ -71,6 +71,25 @@ function wp_votes_set_vote($id, $vote_tag) {
   return true;
 }
 
+/*
+ * Validates if the user already vote or not.
+ *
+ * $user the user object
+ * $pid the post id
+ */
+function wp_votes_user_validation($user, $pid) {
+  if ( _wp_votes_is_vote($user, $pid) ) {
+  }
+}
+
+function _wp_votes_is_vote($user, $pid) {
+  global $wpdb;
+  $sql = 'SELECT SUM(vote) FROM wp_votes where post_id = %d';
+  $query = $wpdb->prepare($sql, $id);
+  $votes = $wpdb->get_var($query);
+  return $votes;
+}
+
 function wp_votes_get_votes($id) {
   global $wpdb;
   $sql = 'SELECT SUM(vote) FROM wp_votes where post_id = %d';
